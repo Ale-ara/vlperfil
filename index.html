@@ -132,6 +132,10 @@
         border-radius: 20px;
       }
 
+    /* Estilo para números negativos */
+    .negativo {
+      color: red;
+    }
   </style>
 </head>
 <body>
@@ -181,8 +185,13 @@
 
           const tdQuantidade = document.createElement("td");
           tdQuantidade.textContent = row[1]; // Quantidade
-          tr.appendChild(tdQuantidade);
+          
+          // Verifica se a quantidade é negativa e aplica a classe
+          if (parseFloat(row[1]) < 0) {
+            tdQuantidade.classList.add("negativo"); // Adiciona a classe 'negativo' se a quantidade for negativa
+          }
 
+          tr.appendChild(tdQuantidade);
           tableBody.appendChild(tr);
         });
 
