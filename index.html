@@ -163,40 +163,37 @@
     </tbody>
   </table>
 
-  <script>
+ <script>
     // URL da API do Google Apps Script
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbzxrDaVnwIxB5TtZp3G0x9_BBj5OEWS2CgtbTCB4Fp3rq-QyFxKZGDOdJXMq3ZHMAM/exec';
-
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbxfL_WobPaPeAO9sATUkrRo5J9Ut_Elg7XD12McaJWaALcE6xsBaCfdkGeOWyIYAkjb5w/exec';  // Troque pela URL real da sua API
+    
     // Função para buscar os dados da API e preencher a tabela
     async function loadEstoque() {
       try {
         const response = await fetch(apiUrl);
-        const { dados, ultimaAtualizacao } = await response.json(); // Desestruturando os dados
+        const data = await response.json();
 
+        // Exibe a última atualização
+        const ultimaAtualizacao = data.ultimaAtualizacao;
+        document.getElementById("ultimaAtualizacao").textContent = `Última Atualização: ${ultimaAtualizacao}`;
+
+        // Preenche os dados na tabela
         const tableBody = document.querySelector("#estoqueTable tbody");
-        tableBody.innerHTML = ""; // Limpa o conteúdo da tabela
+        tableBody.innerHTML = "";  // Limpa o conteúdo da tabela
 
-        dados.forEach((row) => {
+        data.dados.forEach((row) => {
           const tr = document.createElement("tr");
 
           const tdMaterial = document.createElement("td");
-          tdMaterial.textContent = row[0]; // Nome do material
+          tdMaterial.textContent = row[0];  // Nome do material
           tr.appendChild(tdMaterial);
 
           const tdQuantidade = document.createElement("td");
-          tdQuantidade.textContent = row[1]; // Quantidade
-          
-          // Verifica se a quantidade é negativa e aplica a classe
-          if (parseFloat(row[1]) < 0) {
-            tdQuantidade.classList.add("negativo"); // Adiciona a classe 'negativo' se a quantidade for negativa
-          }
-
+          tdQuantidade.textContent = row[1];  // Quantidade
           tr.appendChild(tdQuantidade);
+
           tableBody.appendChild(tr);
         });
-
-        // Atualiza a data e hora da última atualização
-        document.getElementById("ultimaAtualizacao").textContent = `Última Atualização: ${ultimaAtualizacao}`;
       } catch (error) {
         console.error('Erro ao carregar dados:', error);
       }
